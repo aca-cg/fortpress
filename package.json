@@ -1,0 +1,44 @@
+{
+  "name": "fortpress",
+  "version": "0.0.8",
+  "description": "An extremly fast, simple, powerful, modular CMS based on FortressJS",
+  "main": "wf.js",
+  "scripts": {
+    "test": "node ./run/unit.run.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seraum/fortpress.git"
+  },
+  "keywords": [
+    "nodejs",
+    "js",
+    "framework",
+    "web",
+    "net",
+    "http",
+    "https",
+    "fast",
+    "secure",
+    "simple",
+    "speed",
+    "io",
+    "iot",
+    "rest",
+    "restful",
+    "socket",
+    "socket.io"
+  ],
+  "author": "Adrien THIERRY <adrien.thierryfr@gmail.com> (http://seraum.com)",
+  "license": "AGPL",
+  "licenses": [
+  {
+    "type": "AGPL",
+    "url": "https://github.com/seraum/fortpress/blob/master/LICENSE"
+  }
+],
+  "bugs": {
+    "url": "https://github.com/seraum/fortpress/issues"
+  },
+  "homepage": "https://github.com/seraum/fortpress#readme"
+}
