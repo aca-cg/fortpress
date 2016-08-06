@@ -77,13 +77,13 @@ function LoadProcess()
 			{
 
 				var proc = new wf.ProcessClass.Process(c, dArr[d]);
-				if(proc.processState && proc.conf && proc.init.config && proc.init.config.state)
+				if(proc.processState && proc.init && proc.init.state)
 				{
 					sArr.push(proc);
 				}
 			}
 		}
-		sArr.sort(function(a, b){return a.init.config.pos - b.init.config.pos;});
+		sArr.sort(function(a, b){return a.init.pos - b.init.pos;});
 	}
 
 	wf.PROCESS = sArr;
@@ -92,12 +92,12 @@ function LoadProcess()
 	var sL = sArr.length;
 	for( var i = 0; i < sL; i++)
 	{
-    if(sArr[i].init.config.mode == "exec" || sArr[i].init.config.mode == "mixed")
+    if(sArr[i].init.mode == "exec" || sArr[i].init.mode == "mixed")
     {
-		  var wait = sanitInt(sArr[i].init.config.wait, false);
+		  var wait = sanitInt(sArr[i].init.wait, false);
 		  manageProcess(sArr[i], wait);
     }
-    else if(launchCronJob === false && sArr[i].init.config.mode == "cron")
+    else if(launchCronJob === false && sArr[i].init.mode == "cron")
     {
       launchCronJob = true;
     }
@@ -118,7 +118,7 @@ function manageProcess(proc, wait)
 	}
 	else
 	{
-		var delay = sanitInt(proc.init.config.delay, 3000);
+		var delay = sanitInt(proc.init.delay, 3000);
 		setTimeout(function()
 		{
 			startProcess(proc);
@@ -132,7 +132,7 @@ function startProcess(proc)
     var execError = false;
     var error = "";
 
-    var level = getLog(proc.init.config.log);
+    var level = getLog(proc.init.log);
 
     var NAME = proc.name;
 
@@ -141,9 +141,9 @@ function startProcess(proc)
     var logFile = logPath + NAME + wf.CONF.LOG_END;
     var logErr = logPath + NAME + wf.CONF.ERROR_END;
 
-    if(proc.init.config.type == "cmd")
+    if(proc.init.type == "cmd")
     {
-      if(proc.init.config.cmd === undefined || typeof proc.init.config.cmd != "string" || proc.init.config.cmd.length < 1)
+      if(proc.init.cmd === undefined || typeof proc.init.cmd != "string" || proc.init.cmd.length < 1)
       {
         if(level > 0)
         {
@@ -152,12 +152,12 @@ function startProcess(proc)
         return;
       }
     }
-    else if(proc.init.config.type == "file")
+    else if(proc.init.type == "file")
     {
-      if(proc.init.config.file && typeof proc.init.config.file == "string" && proc.init.config.file.length > 0)
+      if(proc.init.file && typeof proc.init.file == "string" && proc.init.file.length > 0)
       {
-        proc.init.config.cmd = process.argv[0];
-        proc.init.config.args[0] = path.join(proc.init.path, proc.init.config.file);
+        proc.init.cmd = process.argv[0];
+        proc.init.args[0] = path.join(proc.init.path, proc.init.file);
       }
       else
       {
@@ -169,14 +169,14 @@ function startProcess(proc)
       }
     }
 
-    if( proc.init.config.cmd !== undefined && typeof proc.init.config.cmd == "string" && proc.init.config.cmd.length > 0)
+    if( proc.init.cmd !== undefined && typeof proc.init.cmd == "string" && proc.init.cmd.length > 0)
     {
       if(proc.restarted === undefined) proc.restarted = 0;
 
       var eProc = {};
       try
       {
-        eProc = spawn(proc.init.config.cmd, proc.init.config.args, proc.init.config.options);
+        eProc = spawn(proc.init.cmd, proc.init.args, proc.init.options);
       }
       catch(e)
       {
@@ -203,7 +203,7 @@ function startProcess(proc)
 
       var sProc = proc;
 
-      var started = sanitInt(proc.init.config.started, 10000);
+      var started = sanitInt(proc.init.started, 10000);
       var to = setTimeout(function()
       {
         if(eProc !== undefined)
@@ -220,9 +220,9 @@ function startProcess(proc)
           wf.wLog(logOut, data);
         }
 
-        if(proc.init.config.onOut && typeof proc.init.config.onOut == "function")
+        if(proc.init.onOut && typeof proc.init.onOut == "function")
         {
-          proc.init.config.onOut(data);
+          proc.init.onOut(data);
         }
       });
       // ON STDERR
@@ -233,9 +233,9 @@ function startProcess(proc)
           wf.wLog(logErr, "stderr: " + data + os.EOL);
         }
         wf.Error('stderr: ' + data + os.EOL);
-        if(proc.init.config.onError && typeof proc.init.config.onError == "function")
+        if(proc.init.onError && typeof proc.init.onError == "function")
         {
-          proc.init.config.onError(data);
+          proc.init.onError(data);
         }
       });
 
@@ -249,13 +249,13 @@ function startProcess(proc)
           wf.wLog(logFile, end);
         }
 
-        if(proc.init.config.onClose && typeof proc.init.config.onClose == "function")
+        if(proc.init.onClose && typeof proc.init.onClose == "function")
         {
-          proc.init.config.onClose();
+          proc.init.onClose();
         }
-        if(sProc.init.config.restart == 'auto' && (sProc.init.config.attempt === 0 || sProc.restarted < sProc.init.config.attempt) )
+        if(sProc.init.restart == 'auto' && (sProc.init.attempt === 0 || sProc.restarted < sProc.init.attempt) )
         {
-          var delay = sanitInt(sProc.init.config.delay, 3000);
+          var delay = sanitInt(sProc.init.delay, 3000);
           sProc.restarted = sProc.restarted + 1;
           var rMess = "Restarting attempts : " + sProc.restarted + " - " + NAME + os.EOL;
 
@@ -290,9 +290,9 @@ function checkCronJob()
   var sI = wf.PROCESS.length;
   for(var i = 0; i < sI; i++)
   {
-    if(wf.PROCESS[i].init.config.mode == "cron" || wf.PROCESS[i].init.config.mode == "mixed")
+    if(wf.PROCESS[i].init.mode == "cron" || wf.PROCESS[i].init.mode == "mixed")
     {
-      if(validate(date, wf.PROCESS[i].init.config.cron))
+      if(validate(date, wf.PROCESS[i].init.cron))
       {
         wf.PROCESS[i].restarted = 0;
         startProcess(wf.PROCESS[i]);
