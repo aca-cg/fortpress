@@ -59,7 +59,7 @@ function Update(collection, query, update, option, cb)
 	if(!option.replace) option.replace = false;
 	var dataPath = path.join(this.link.dataPath, collection,wf.CONF.FDB_STORE_FOLDER);
 
-	if(option.raw)
+	if(option && option.raw)
 	{
 		fs.readdir(dataPath, function(err, file)
 		{

@@ -42,9 +42,9 @@ function FindById(collection, id, option, cb)
 		cb = option;
 		option = {};
 	}
-
+  console.dir(option);
 	// search in fs
-	if(option.raw)
+	if(option && option.raw)
 	{
 		var dataPath = path.join(this.link.dataPath, collection,wf.CONF.FDB_STORE_FOLDER, id + "." + collection + wf.CONF.FDB_DATA_END);
 		fs.readFile(dataPath, function(err, data)

@@ -45,7 +45,7 @@ function Save(collection, data, option, cb)
 		option = {};
 	}
 
-	if(!data.id) data.id = wf.UID.generate();
+	if(data.id === undefined || data.id === null) data.id = wf.UID.generate();
 
 	var colpath = path.join(self.link.dataPath, collection);
 	var storepath = path.join(colpath,wf.CONF.FDB_STORE_FOLDER);

@@ -44,7 +44,7 @@ function Create(collection, data, option, cb)
 		option = {};
 	}
 
-	if(!data.id) data.id = wf.UID.generate();
+	if(data.id === undefined || data.id === null) data.id = wf.UID.generate();
 
 	if(this.link.data && this.link.data[collection] && this.link.data[collection][data.id])
 		return cb(Error(), null);

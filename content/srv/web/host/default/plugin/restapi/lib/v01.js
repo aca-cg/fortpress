@@ -904,7 +904,10 @@ function API01()
                     {
                         var tmpV = tmpQ[1].split('=');
                         res[tmpO[0]][tmpO[1]] = {};
-                        res[tmpO[0]][tmpO[1]][tmpV[0]] = tmpV[1];
+                        if(tmpV[1] && tmpV[1].indexOf(',') > -1)
+                          res[tmpO[0]][tmpO[1]][tmpV[0]] = tmpV[1].split(',');
+                        else
+                          res[tmpO[0]][tmpO[1]][tmpV[0]] = tmpV[1];
                     }
                     else res[tmpO[0]][tmpO[1]] = tmpQ[1];
                 }

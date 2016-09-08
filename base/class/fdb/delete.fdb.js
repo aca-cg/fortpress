@@ -43,7 +43,7 @@ function Delete(collection, query, option, cb)
 		option = {};
 	}
 
-	if(option.raw)
+	if(option && option.raw)
 	{
 		fs.readdir(dataPath, function(err, file)
 		{

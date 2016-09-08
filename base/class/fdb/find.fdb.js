@@ -26,6 +26,12 @@
  *
  */
 
+/*
+
+  TODO : créer un array à partir de l'objet et boucler sur l'array
+
+*/
+
 module.exports = Find;
 var wf = WF();
 
@@ -39,7 +45,7 @@ function Find(collection, query, option, cb)
 	}
 
 	// search in fs
-	if(option.raw)
+	if(option && option.raw)
 	{
 		var dataPath = path.join(this.link.dataPath, collection,wf.CONF.FDB_STORE_FOLDER);var dataArray = [];
 		fs.readdir(dataPath, function(err, file)
@@ -138,6 +144,22 @@ function Find(collection, query, option, cb)
 		{
 			ret = ret.slice(0, option.limit);
 		}
+    if(option.in)
+    {
+       var result = [];
+       for(var opt in option.in)
+       {
+          for(var i = 0; i < ret.length; i++)
+          {
+            if(ret[i] && ret[i][opt] && ret[i][opt].indexOf(option.in[opt]) > -1)
+            {
+               result.push(ret[i]);
+                break;
+            }
+          }
+       }
+      ret = result;
+    }
 		cb(null, ret);
 	}
 
