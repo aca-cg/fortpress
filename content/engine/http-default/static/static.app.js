@@ -33,15 +33,26 @@ function RouteStatic()
 
 	function sendFile(req, res, url)
 	{
-		res.writeHead(200,
-		{
-			'Content-type': req.HOST.ZONES[req.zone].shared[url].mime,
-			'Content-length': req.HOST.ZONES[req.zone].shared[url].buffer.length,
-			'Cache-Control': 'public, max-age=3600',
-			'Access-Control-Allow-Origin': req.url, // "*"
-			'X-Frame-Options': "SAMEORIGIN", // DENY, SAMEORIGIN, or ALLOW-FROM
-		});
-		res.end(req.HOST.ZONES[req.zone].shared[url].buffer);
+    try
+    {
+		  res.writeHead(200,
+		  {
+  			'Content-type': req.HOST.ZONES[req.zone].shared[url].mime,
+  			'Content-length': req.HOST.ZONES[req.zone].shared[url].buffer.length,
+  			'Cache-Control': 'public, max-age=3600',
+  			'Access-Control-Allow-Origin': req.url, // "*"
+  			'X-Frame-Options': "SAMEORIGIN", // DENY, SAMEORIGIN, or ALLOW-FROM
+  		});
+      res.end(req.HOST.ZONES[req.zone].shared[url].buffer);
+    }
+    catch(e)
+    {
+      console.log("Static error : " + err + " | req : " + req.rawUrl);
+      req.continue = true;
+      next(req, res);
+    }
+
+
 	}
 
 	function addToCache(req, stat, folder, url)
@@ -99,33 +110,46 @@ function RouteStatic()
 
             f = req.HOST.ZONES[req.zone].path + req.HOST.ZONES[req.zone].name + "/" + req.HOST.ZONES[req.zone].init.shared + f;
 
-            fs.stat(f, function(err, stat)
+            var test = path.resolve(f);
+            var fold = req.HOST.ZONES[req.zone].path + req.HOST.ZONES[req.zone].name + "/" + req.HOST.ZONES[req.zone].init.shared;
+
+            if(test == fold && test.indexOf( req.HOST.ZONES[req.zone].path + req.HOST.ZONES[req.zone].name + "/" + req.HOST.ZONES[req.zone].init.shared + "/" ) < 0)
             {
-                if(err)
+              req.continue = true;
+              return;
+            }
+            else
+            {
+
+                fs.stat(f, function(err, stat)
                 {
-                    next(req, res);
-                }
-                else if(stat.isFile())
-                {
-					var cLength = 0;
-                    if( req.HOST.ZONES[req.zone].init.cache && UTILS.checkCache(req.HOST.ZONES[req.zone].init.cache, f) )
+                    if(err)
                     {
-                            addToCache(req, stat, f, sUrl);
+                        next(req, res);
                     }
-                    res.writeHead(200,
+                    else if(stat.isFile())
                     {
-                        'Content-type': wf.mimeUtil.lookup(f),
-                        'Cache-Control': 'public, max-age=3600',
-                        'Access-Control-Allow-Origin': req.url, // "*"
-                        'X-Frame-Options': "SAMEORIGIN", // DENY, SAMEORIGIN, or ALLOW-FROM
-                    });
-                    fs.createReadStream(f, {bufferSize: 64 * 1024}).pipe(res);
-                }
-                else
-                {
-                    next(req, res);
-                }
-            });
+                        var cLength = 0;
+                        if( req.HOST.ZONES[req.zone].init.cache && UTILS.checkCache(req.HOST.ZONES[req.zone].init.cache, f) )
+                        {
+                                addToCache(req, stat, f, sUrl);
+                        }
+                        res.writeHead(200,
+                        {
+                            'Content-type': wf.mimeUtil.lookup(f),
+                            'Cache-Control': 'public, max-age=3600',
+                            'Access-Control-Allow-Origin': req.url, // "*"
+                            'X-Frame-Options': "SAMEORIGIN", // DENY, SAMEORIGIN, or ALLOW-FROM
+                        });
+                        fs.createReadStream(f, {bufferSize: 64 * 1024}).pipe(res);
+                    }
+                    else
+                    {
+                        req.continue = true;
+                        next(req, res);
+                    }
+                });
+            }
         }
         return;
     };

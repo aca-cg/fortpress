@@ -87,6 +87,7 @@ function httpUtil(httpHandler)
                 cbOk(data);
             });
         });
+        if(opt && opt.data) get.write(opt.data);
         get.end();
         return;
     };
@@ -167,3 +168,4 @@ function httpUtil(httpHandler)
      };
 
 }
+

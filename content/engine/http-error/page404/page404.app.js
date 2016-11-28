@@ -36,15 +36,22 @@ function send404()
         req.continue = false;
         if(req.HOST.init['404'])
         {
-            wf.Redirect(res, req.HOST.init['404']);
+          var uri = "";
+          if(req.HOST.init['referrer'])
+            uri += "?referrer=" + encodeURIComponent(req.rawUrl);
+          try{
+            wf.Redirect(res, req.HOST.init['404'] + uri);
+          }catch(e){}
         }
         else
         {
+          try{
             res.writeHead(404,
             {
                 'Content-type': "text/html",
             });
             res.end("<h1>404 ERROR</h1>");
+          }catch(e){}
         }
     };
 }

@@ -118,7 +118,7 @@ function parseHook(root, current, hookArr)
 				{
 					newModule = new loadedModule(app);
 					if(newModule.code !== undefined && typeof newModule.code === "function") newModule.execute = true;
-					if(newModule.runOnce && process.env.wrkId && process.env.wrkId === 0) newModule.runOnce();
+					if(newModule.runOnce && process.env.wrkId && process.env.wrkId == 0) newModule.runOnce();
 					newModule.getView = function(v)
 					{
 						if(app.view[v] !== undefined)

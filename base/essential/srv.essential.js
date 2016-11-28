@@ -70,13 +70,11 @@ var securify = function()
     {
         try
         {
-                if(wf.CONF.GROUP_ID !== undefined)
-                    process.setgid(wf.CONF.GROUP_ID);
-                if(wf.CONF.USER_ID !== undefined)
-                    process.setuid(wf.CONF.USER_ID);
-        }catch(e){
-
-        }
+                if(wf.CONF.DEFAULT_GID !== undefined)
+                    process.setgid(wf.CONF.DEFAULT_GID);
+                if(wf.CONF.DEFAULT_UID !== undefined)
+                    process.setuid(wf.CONF.DEFAULT_UID);
+        }catch(e){}
     }
 };
 var Open = function(srv)

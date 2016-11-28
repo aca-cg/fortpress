@@ -26,11 +26,27 @@
  *
  */
 
+/**
+ * @namespace fileUtil
+ * @description fileUtil static namespace
+ *
+ * @example wf.fileUtil.rmdir('mydir', function(err){ });
+*/
+
 var fileUtil = {};
 
-var rmdir = function(dir, cb2)
+/**
+ * @method rmdir
+ * @description recursive rm method
+ * @memberof fileUtil
+ * @param dir {string} Directory to delete
+ * @param callback {function} Function called at end callback(err){}
+ *
+*/
+
+var rmdir = function(dir, callback)
 {
-	fs.readdir(dir, function(err, list)
+	  fs.readdir(dir, function(err, list)
     {
         if(err)
         {
@@ -38,21 +54,22 @@ var rmdir = function(dir, cb2)
             {
                 fs.unlink(dir, function(err)
                 {
-                    cb2(err);
+                    callback(err);
                 });
-            }catch(e){}
+            }
+            catch(e){}
         }
         else
         {
             var i = 0;
             var j = list.length;
-            var cb = function(){ fs.rmdir(dir, function(err){if(cb2 && typeof cb2 == "function") cb2(err);});};
-            recRm(dir, i, j, list, cb);
+            var cb = function(){ fs.rmdir(dir, function(err){if(callback && typeof callback == "function") callback(err);});};
+            recursiveRm(dir, i, j, list, cb);
             return;
         }
     });
 
-    function recRm(from, i, j, list, cb)
+    function recursiveRm(from, i, j, list, cb)
     {
 
         function nextFile()
@@ -60,7 +77,7 @@ var rmdir = function(dir, cb2)
             i++;
             if(i < j)
             {
-                recRm(from, i, j, list, cb);
+                recursiveRm(from, i, j, list, cb);
             }
             else
             {
@@ -68,37 +85,39 @@ var rmdir = function(dir, cb2)
                     cb();
             }
         }
-		var filename = "";
+        var filename = "";
+
         try
-		{
-			filename = path.join(from, list[i]);
-        }
-		catch(e)
         {
-            nextFile();
-            return;
+          filename = path.join(from, list[i]);
         }
+        catch(e)
+        {
+          nextFile();
+          return;
+        }
+
         fs.stat(filename, function(err, stat)
         {
-            if(err)
+          if(err)
+          {
+            nextFile();
+          }
+          else if(stat.isDirectory())
+          {
+            if(filename)
             {
-                nextFile();
-            }
-            else if(stat.isDirectory())
-            {
-                if(filename)
-                {
-                    rmdir(filename, nextFile);
-                }
-                else
-                {
-                    nextFile();
-                }
+              rmdir(filename, nextFile);
             }
             else
             {
-                fs.unlink(filename, nextFile);
+              nextFile();
             }
+          }
+          else
+          {
+            fs.unlink(filename, nextFile);
+          }
         });
     }
 };

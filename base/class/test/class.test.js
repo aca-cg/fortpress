@@ -40,9 +40,15 @@ setTimeout(function()
 {
 	console.log("[+] Saving");
 	// SAVE
-	fdb.Save("test", {"id": "my_first_post", "Title":"Hey ! My First post !", "content":"This is the content of my first post"}, function(err, dataS)
+	fdb.Save("test", {"id": "my_first_post", "Title":"Hey ! My First post !", "content":"This is the content of my first post", "arraydata":["un","deux", "trois"]}, function(err, dataS)
 	{
 		console.log(dataS)
+    // find with option
+    fdb.Find("test", {}, {"in": {"arraydata":"un"}}, function(err, data)
+    {
+      console.log(err);
+      console.log(data);
+    });
 		// FindById
 		console.log("[+] Finding");
 		fdb.FindById("test","my_first_post", function(err, dataF)

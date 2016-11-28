@@ -13,6 +13,7 @@ var hostConf=
     {
 		"log": "Logger app",
 		"api": "Api app",
+		"route": "route app",
     },
 }
 module.exports = hostConf

@@ -51,10 +51,10 @@ function WorkerService()
       wf.LoadPages(); // LOAD PAGES IF ANY
       wf.LoadEngines(); // LOAD ENGINES
       wf.LoadServerEngine(); // LOAD ENGINES FOR SRV
+      wf.LoadModels(); // LOAD MODELS
       wf.LoadApps(); // LOAD APPS FOR HOST
       wf.LoadHooks(); // LOAD HOOKS
-	  wf.LoadModels(); // LOAD MODELS
-	  wf.LoadAppArray(); // LOAD APP ARRAY FOR EACH HOST
+	    wf.LoadAppArray(); // LOAD APP ARRAY FOR EACH HOST
       // RUN SERVERS
       wf.Srv.Run(); // RUN THE SERVER
       wf.eventEmitter.emit("run"); // LAUNCH RUN EVENT

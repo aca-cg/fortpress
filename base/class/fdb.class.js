@@ -272,6 +272,7 @@ function FDB(obj)
 		var self = this;
 		fs.readFile(this.link.configPath, function(err, data)
 		{
+
 			if(err)
 			{
 				if(err.code == "ENOENT")

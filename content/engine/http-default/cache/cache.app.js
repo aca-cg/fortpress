@@ -30,15 +30,14 @@ module.exports = cacheApp;
 function cacheApp()
 {
     var wf = WF();
-    this.runOnce = function()
+  function doCache()
+  {
+    if(wf.CONF.SHARED_CACHE && wf.CONF.REFRESH_CACHE)
     {
-        function doCache()
-        {
-            if(wf.CONF.SHARED_CACHE && wf.CONF.REFRESH_CACHE)
-            {
-                setInterval(getCache, wf.CONF.INTERVAL_CACHE);
-            }
-        }
+      setInterval(getCache, wf.CONF.INTERVAL_CACHE);
+    }
+    else if(wf.CONF.SHARED_CACHE) getCache();
+  }
 
 
 		function cbCache(srv, host, zone)
@@ -56,7 +55,7 @@ function cacheApp()
 							delete wf.SERVERS[srv].HOSTS[host].ZONES[zone].shared[folder];
 						}
 
-						else if( tmp.mtime != stat.mtime && UTILS.checkCache(wf.SERVERS[s].HOSTS[host].ZONES[zone].init.cache, tmp.path) )
+						else if( tmp.mtime != stat.mtime && UTILS.checkCache(wf.SERVERS[srv].HOSTS[host].ZONES[zone].init.cache, tmp.path) )
 						{
 							try
 							{
@@ -78,9 +77,9 @@ function cacheApp()
 
         function getCache()
         {
-			wf.parseServersAndHostsAndZones(cbCache);
+			    wf.parseServersAndHostsAndZones(cbCache);
         }
 
         wf.eventEmitter.on("run", doCache);
-    };
+
 }

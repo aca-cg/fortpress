@@ -130,6 +130,34 @@ function Model(empty)
 		}
 	}
 
+  this.UpdateById = function()
+	{
+        this.ApplyModifier();
+		var error = {value: false};
+		error = this.ApplyValidator();
+		if(this.link === undefined)
+		{
+			error.value = true;
+			error.message = "DB Link undefined"
+			error.code = "21";
+		}
+    if(this.query.id == undefined || this.query.id == null)
+    {
+      error.value = true;
+			error.message = "id undefined"
+			error.code = "22";
+    }
+		if(error.value === false)
+		{
+			this.ApplyBefore();
+			this.link.UpdateById(this.collection, this.query.id, this.data, this.options, this.ForgeCallback());
+		}
+		else
+		{
+			this.cb(error, null);
+		}
+	}
+
 	this.Save = function()
 	{
         this.ApplyModifier();

@@ -89,6 +89,7 @@ function addEngine(tmpDir, tmpArray, result)
 			{
 				newModule = new loadedModule(confModule);
 				if(newModule.code !== undefined && typeof newModule.code === "function") newModule.execute = true;
+				if(newModule.runOnce && process.env.wrkId && process.env.wrkId == 0) newModule.runOnce();
 			}
 		}
 		catch(e){console.log("Error in Engine : " + tmpDir + confModule.name + "/" + confModule.name + wf.CONF.APP_END);}

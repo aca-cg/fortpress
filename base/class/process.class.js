@@ -71,7 +71,7 @@ function ProcessConf(_path, _name)
 			  console.log("[!] Error process conf : " + file);
 			}
 		}
-    UTILS.defaultConf(this, config, defaultConf);
+    UTILS.joinDefaultConf(this, config, defaultConf);
 	};
 
 	/* FONCTION DECLARATIONS */
