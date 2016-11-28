@@ -7,7 +7,11 @@
   "date": "2016-11-28T14:00:00.000Z",
   "categories": "articles",
   "tags": ["FortressJS", "blog", "code"],
-  "image": "http://i.imgur.com/JQGtQwE.jpg",
+  "image":
+  {
+    "src": "http://i.imgur.com/JQGtQwE.jpg"
+
+  },
   "comments": true,
   "share": true
 }

@@ -7,7 +7,7 @@
   "date": "2016-11-27T14:00:00.000Z",
   "categories": "articles",
   "tags": ["hackmyfortress", "blog", "security"],
-  "image": "http://i.imgur.com/JQGtQwE.jpg",
+  "image": { "src": "http://i.imgur.com/JQGtQwE.jpg"},
   "comments": true,
   "share": true
 }
