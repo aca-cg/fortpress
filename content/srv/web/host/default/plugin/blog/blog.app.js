@@ -43,6 +43,23 @@ var SEARCH_CONTENT = [];
 
 function Blog(app)
 {
+
+
+  if(app.init.blog.handle_home_page)
+  {
+
+    this.code = function(req, res)
+    {
+      if(req.url == "/")
+      {
+        req.continue = false;
+        res.end(MAIN);
+      }
+    }
+
+  }
+
+
   var blogRoute = app.init.blog.uri + "/:uri?";
   wf.Router.GET(app.init.blog.domain, blogRoute, blogRouter);
   function blogRouter(req, res)
@@ -268,8 +285,8 @@ setInterval(setUpBlog, app.init.blog.refresh);
   function forgeFooter(conf)
   {
     var meta = app.view['footer'].toString();
-    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA_ID__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__"];
-    var to = [conf.name, conf.url, conf.footer, conf.stats.ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github];
+    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA_ID__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__", "__LINKEDIN_ACCOUNT__"];
+    var to = [conf.name, conf.url, conf.footer, conf.stats.ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github, conf.social.linkedin];
     return forgeRecursive(meta, from, to);
   }
 

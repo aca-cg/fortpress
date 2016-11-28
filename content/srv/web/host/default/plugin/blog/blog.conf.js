@@ -7,11 +7,13 @@ var blogConf=
 		"hook": "route",
 		"blog":
 		{
+      "handle_home_page": true, // handle / or not
+
 			"post_folder": wf.CONF['CONTENT_PATH'] + "blog",
 			"name": "Hackmyfortress - Blog",
 			"domain": "*", // "*" if any
-			"url": "http://localhost:8080/blog/",
-			"uri": "/blog", // "" if /
+			"url": "http://localhost:8080/",
+			"uri": "", // "" if /
 			"favicon": "/favicon.ico",
 			"main_title": "Hackmyfortress - Blog - News, Hacking, IT and fun",
 			"title": "Hackmyfortress - Blog",
@@ -104,6 +106,7 @@ var blogConf=
 				"twitter": "https://twitter.com/hackmyfortress",
 				"gplus": "https://plus.google.com/+Hackmyfortress",
 				"github": "https://github.com/seraum/hmf-training",
+        "linkedin": "https://www.linkedin.com/in/adrien-thierry-6448a664",
 			},
 
 			"account":

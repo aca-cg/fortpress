@@ -28,7 +28,7 @@
 
 module.exports = homePage;
 
-function homePage(ok)
+function homePage(page)
 {
     this.code = function(req, res)
     {
