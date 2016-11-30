@@ -7,7 +7,7 @@ var blogConf=
 		"hook": "route",
 		"blog":
 		{
-      "handle_home_page": true, // handle / or not
+      "handle_home_page": true, // handle auto "/" or not
 
 			"post_folder": wf.CONF['CONTENT_PATH'] + "blog",
 			"name": "Hackmyfortress - Blog",
@@ -45,14 +45,14 @@ var blogConf=
 
 			],
 
-			"page":
+			"page": // automaticaly loaded
 			{
 				"search":
 				{
 					"uri": "search",
 					"view":"search",
 					"type": "article",
-					"title": "Hackmyfortress - Blog - Search engine",
+					"title": "FortPress - Blog - Search engine",
 					"description": "Search on Hackmyfortress - Blog",
 					"image": "",
 				},
@@ -61,13 +61,13 @@ var blogConf=
 					"uri": "404",
 					"view":"404",
 					"type": "article",
-					"title": "Hackmyfortress - 404 Error",
+					"title": "FortPress - 404 Error",
 					"description": "This content doesn't exist - 404 Error",
 					"image": "",
 				}
 			},
 
-			"special":
+			"special": // Need code/controller to work
 			{
 				"search.json":
 				{
@@ -77,7 +77,7 @@ var blogConf=
 				{
 				 	"uri": "tags",
 					"type": "article",
-					"title": "Archive indexed by tags",
+					"title": "FortPress - Archive indexed by tags",
 					"description": "An archive of posts sorted by tag.",
 					"image": "",
 				}

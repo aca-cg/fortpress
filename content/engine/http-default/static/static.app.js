@@ -99,6 +99,7 @@ function RouteStatic()
         }
         else if(req.HOST.ZONES[req.zone].init && req.HOST.ZONES[req.zone].init.shared !== undefined )
         {
+
             var f = "";
 
             if ( req.url.indexOf("/" + req.zone) === 0)
@@ -108,18 +109,21 @@ function RouteStatic()
 
             req.continue = false;
 
-            f = req.HOST.ZONES[req.zone].path + req.HOST.ZONES[req.zone].name + "/" + req.HOST.ZONES[req.zone].init.shared + f;
+            f = path.join(req.HOST.ZONES[req.zone].path, req.HOST.ZONES[req.zone].name, req.HOST.ZONES[req.zone].init.shared, f);
 
-            var test = path.resolve(f);
-            var fold = req.HOST.ZONES[req.zone].path + req.HOST.ZONES[req.zone].name + "/" + req.HOST.ZONES[req.zone].init.shared;
+            f = path.resolve(f);
 
-            if(test == fold && test.indexOf( req.HOST.ZONES[req.zone].path + req.HOST.ZONES[req.zone].name + "/" + req.HOST.ZONES[req.zone].init.shared + "/" ) < 0)
+            var fold = path.join(req.HOST.ZONES[req.zone].path, req.HOST.ZONES[req.zone].name, req.HOST.ZONES[req.zone].init.shared);
+
+            if(f == fold || f.indexOf( fold + "/" ) < 0)
             {
               req.continue = true;
               return;
             }
             else
             {
+              try
+              {
 
                 fs.stat(f, function(err, stat)
                 {
@@ -149,6 +153,12 @@ function RouteStatic()
                         next(req, res);
                     }
                 });
+              }
+              catch(e)
+              {
+                console.log("URL : " + req.rawUrl);
+                 console.log(e);
+              }
             }
         }
         return;
