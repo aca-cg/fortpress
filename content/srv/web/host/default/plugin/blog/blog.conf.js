@@ -12,8 +12,8 @@ var blogConf=
 			"post_folder": wf.CONF['CONTENT_PATH'] + "blog",
 			"name": "My Fortpress - Blog",
 			"domain": "*", // "*" if any
-			"url": "/blog/",
-			"uri": "/blog", // "" if /
+			"url": "/", // main blog url
+			"uri": "", // "" if /
 			"favicon": "/favicon.ico",
 			"main_title": "My Fortpress Secured Blog",
 			"title": "My Fortpress Secured Blog",
