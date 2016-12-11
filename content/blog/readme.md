@@ -1,12 +1,13 @@
 {
   "type": "article",
+  "author": "adrien",
   "layout": "post",
   "title": "How to develop with FortressJS !",
   "uri": "how-to-develop-with-fortressjs",
   "description": "This article is a list of rule to code harmoniously with FortressJS",
   "date": "2016-11-28T14:00:00.000Z",
   "categories": "articles",
-  "tags": ["FortressJS", "blog", "code"],
+  "tags": ["FortressJS", "Fortpress", "blog", "code"],
   "image":
   {
     "src": "http://i.imgur.com/JQGtQwE.jpg"

@@ -64,6 +64,7 @@ function Blog(app)
   wf.Router.GET(app.init.blog.domain, blogRoute, blogRouter);
   function blogRouter(req, res)
   {
+    res.setHeader('content-type', 'text/html;charset=utf-8');
     if(req.param.uri == null || req.param.uri == undefined )
     {
       res.end(MAIN);
@@ -129,14 +130,14 @@ setInterval(setUpBlog, app.init.blog.refresh);
       var mdHtml = MD(md);
       var postConf = wf.Clone(app.init.blog);
 
-      postConf.main_title = conf.title;
+      postConf.main_title = conf.title + " - " + app.init.blog.name;
       postConf.title = ""; // no main title on blog post
       postConf.subtitle = ""; // no subtitle on blog post
 
       postConf.current_url = postConf.url + conf.uri;
       postConf.card.title = conf.title;
       postConf.card.description = conf.description;
-      postConf.card.image = conf.image;
+      postConf.card.image = conf.image.src;
 
       postConf.og.type = conf.type,
       postConf.og.title = conf.title;
@@ -150,6 +151,21 @@ setInterval(setUpBlog, app.init.blog.refresh);
         var from = ["__SRC__", "__STYLE__", "__ALT__", "__TITLE__"];
         var to = [conf.image.src, conf.image.style, conf.image.alt, conf.image.title];
         img = forgeRecursive(img, from, to);
+      }
+
+      var author = "";
+      var author_conf = conf.author;
+      if(author_conf && app.init.blog && app.init.blog.author[author_conf])
+      {
+        author_conf = app.init.blog.author[author_conf];
+        author_conf.comment = app.init.blog.disqus;
+        author_conf.date =
+          {
+            "timestamp": conf.date,
+            "friendly": new Date(conf.date).toLocaleDateString(app.init.blog.locale),
+          };
+        author = forgeAuthor(author_conf);
+
       }
 
       var disqusView = "";
@@ -170,8 +186,8 @@ setInterval(setUpBlog, app.init.blog.refresh);
 
       var tags = forgeTags(conf.tags);
       var pageView = app.view['blog'].toString();
-      var from = ["__TITLE__", "__IMG__", "__DISQUS__", "__SHARE__", "__CONTENT__", "__TAGS__", "__BLOG_URL__"];
-      var to = [conf.title, img, disqusView, shareView, mdHtml, tags, app.init.blog.url];
+      var from = ["__TITLE__", "__IMG__", "__AUTHOR__", "__DISQUS__", "__SHARE__", "__CONTENT__", "__TAGS__", "__BLOG_URL__"];
+      var to = [conf.title, img, author, disqusView, shareView, mdHtml, tags, app.init.blog.url];
       pageView = forgeRecursive(pageView, from, to)
       var postView = forgeMeta(postConf) + forgeHeader(postConf) + pageView + forgeFooter(app.init.blog);
 
@@ -384,6 +400,60 @@ setInterval(setUpBlog, app.init.blog.refresh);
 
     return pageConf;
   }
+
+  function forgeAuthor(conf)
+  {
+    var Author = app.view['author'].toString();
+    var result = "";
+
+    var img = "";
+    var name = "";
+    var date = "";
+    var comment = "";
+    var twitter = "";
+    var facebook = "";
+    var gplus = "";
+    var linkedin = "";
+    var custom = "";
+
+    var social_class =
+    {
+      "twitter": "fa-twitter-square",
+      "facebook": "fa-facebook-square",
+      "gplus":"fa-gplus-square",
+      "linkedin": "fa-linkedin-square",
+    }
+
+    var Image = '<img src="__IMG_URL__" class="bio-photo" alt="__TITLE__" title="__TITLE__">';
+    var Name = '<span class="author vcard">By <span class="fn">__NAME__</span></span>';
+    var dateView = '<span class="entry-date date published"><time datetime="__TIMESTAMP__"><i class="fa fa-calendar-o"></i> __DATE__</time></span>';
+    var Social = '<span class="social-share-span"><a target="_BLANK" href="__URL__" title="Share on __NETWORK__" itemprop="__NETWORK__"><i class="fa __SOCIAL_CLASS__"></i> My __NETWORK__</a></span>';
+    var Custom = '<span class="social-share-span"><a target="_BLANK" href="__URL__" title="Share on __NETWORK__" itemprop="__NETWORK__"><i class="fa __SOCIAL_CLASS__"></i> __NETWORK__</a></span>';
+
+    if(conf.image) img = forgeRecursive(Image, ["__IMG_URL__", "__TITLE__"], [conf.image.url, conf.image.title]);
+    if(conf.name) name = forgeRecursive(Name, ["__NAME__"], [conf.name]);
+    if(conf.date) date = forgeRecursive(dateView, ["__TIMESTAMP__", "__DATE__"], [conf.date.timestamp, conf.date.friendly]);
+    if(conf.comment) comment = '<span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Leave a Comment</a></span>';
+    if(conf.social && conf.social.twitter) twitter = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.twitter, "Twitter", social_class.twitter]);
+    if(conf.social && conf.social.facebook) facebook = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.facebook, "Facebook", social_class.facebook]);
+    if(conf.social && conf.social.gplus) gplus = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.gplus, "Google Plus", social_class.gplus]);
+    if(conf.social && conf.social.linkedin) linkedin = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.linkedin, "Linkedin", social_class.linkedin]);
+
+
+    if(conf.custom && conf.custom.length && conf.custom.length > 0)
+    {
+
+       for(var i = 0; i < conf.custom.length; i++)
+       {
+          custom += forgeRecursive(Custom, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.custom[i].url, conf.custom[i].title, conf.custom[i].class]);
+       }
+    }
+
+    result = forgeRecursive(Author, ["__AUTHOR_IMG__", "__AUTHOR_NAME__", "__DATE_PUBLISHED__", "__DISQUS_COMMENT__", "__AUTHOR_TWITTER__", "__AUTHOR_FACEBOOK__", "__AUTHOR_GPLUS__", "__AUTHOR_LINKEDIN__", "__AUTHOR_CUSTOM__"],
+                                  [img, name, date, comment, twitter, facebook, gplus, linkedin, custom]);
+    return result;
+  };
+
 
   function preparePages()
   {

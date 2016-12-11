@@ -7,18 +7,18 @@ var blogConf=
 		"hook": "route",
 		"blog":
 		{
-      "handle_home_page": true, // handle auto "/" or not
+      "handle_home_page": true, // handle / or not
 
 			"post_folder": wf.CONF['CONTENT_PATH'] + "blog",
-			"name": "Hackmyfortress - Blog",
+			"name": "My Fortpress - Blog",
 			"domain": "*", // "*" if any
-			"url": "http://localhost:8080/",
-			"uri": "", // "" if /
+			"url": "/blog/",
+			"uri": "/blog", // "" if /
 			"favicon": "/favicon.ico",
-			"main_title": "Hackmyfortress - Blog - News, Hacking, IT and fun",
-			"title": "Hackmyfortress - Blog",
-			"subtitle": "News about the Fortress, hacking and IT",
-			"footer": "&copy; 2016 Hackmyfortress - Blog ",
+			"main_title": "My Fortpress Secured Blog",
+			"title": "My Fortpress Secured Blog",
+			"subtitle": "My Fortpress Secured Blog",
+			"footer": "&copy; 2016 <a href='http://seraum.com' target='_BLANK'>Seraum</a> - Blog ",
 			"locale": "en-US",
 			"logo": "/images/logo.jpg",
 			"logo_style":"background-color:#000;",
@@ -43,6 +43,12 @@ var blogConf=
 					"target": "",
 				},
 
+        {
+          "href":"http://hackmyfortress.com/",
+					"title": "Challenge",
+					"target": "_BLANK",
+        },
+
 			],
 
 			"page": // automaticaly loaded
@@ -52,8 +58,8 @@ var blogConf=
 					"uri": "search",
 					"view":"search",
 					"type": "article",
-					"title": "FortPress - Blog - Search engine",
-					"description": "Search on Hackmyfortress - Blog",
+					"title": "Fortpress - Search engine",
+					"description": "Search on Fortpress - Blog",
 					"image": "",
 				},
 				"404":
@@ -61,27 +67,56 @@ var blogConf=
 					"uri": "404",
 					"view":"404",
 					"type": "article",
-					"title": "FortPress - 404 Error",
-					"description": "This content doesn't exist - 404 Error",
+					"title": "Fortpress - 404 Error",
+					"description": "This content doesn't exist on Fortpress - 404 Error",
 					"image": "",
 				}
 			},
 
 			"special": // Need code/controller to work
 			{
+
 				"search.json":
 				{
 					"uri": "search.json"
 				},
+
 				"tags":
 				{
 				 	"uri": "tags",
 					"type": "article",
-					"title": "FortPress - Archive indexed by tags",
+					"title": "Fortpress - Archive indexed by tags",
 					"description": "An archive of posts sorted by tag.",
 					"image": "",
 				}
 			},
+
+      "author":
+      {
+        "adrien":
+        {
+          "name": "Adrien T.",
+          "image":
+          {
+             "url":"/blog/author/adrien.jpg",
+            "title":"Adrien T.",
+          },
+          "social":
+          {
+             "twitter": "https://twitter.com/adrien_thierry",
+             "facebook": "https://www.facebook.com/adrien.thierry.fr",
+             "linkedin": "https://www.linkedin.com/in/adrien-thierry-6448a664",
+          },
+          "custom":
+          [
+            {
+              "url": "http://hackmyfortress.com",
+              "title": "Hackmyfortress",
+              "class": "fa-dollar",
+            },
+          ]
+        },
+      },
 
 			"og":
 			{
@@ -102,21 +137,21 @@ var blogConf=
 
 			"social":
 			{
-				"facebook": "https://facebook.com/hackmyfortress",
-				"twitter": "https://twitter.com/hackmyfortress",
-				"gplus": "https://plus.google.com/+Hackmyfortress",
-				"github": "https://github.com/seraum/hmf-training",
+				"facebook": "https://www.facebook.com/seraumdotcom",
+				"twitter": "https://twitter.com/seraum",
+				"gplus": "https://plus.google.com/+Seraumdotcom",
+				"github": "https://github.com/seraum/",
         "linkedin": "https://www.linkedin.com/in/adrien-thierry-6448a664",
 			},
 
 			"account":
 			{
-				"twitter": "@hackmyfortress", // TWITTER ACCOUNT WITH @
+				"twitter": "@seraum", // TWITTER ACCOUNT WITH @
 			},
 
 			"stats":
 			{
-				"ga": "", // GA ID
+				"ga": "UA-37283264-6", // GA ID
 			},
 
 			"disqus": "", // DISQUS ID

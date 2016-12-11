@@ -54,9 +54,9 @@ function Model(empty)
 			{
 				if(typeof(this.field[v]) === 'object')
 				{
-					if(this.field[v].bydefault !== undefined)
+					if(this.field[v].default !== undefined)
 					{
-					  this.data[v] = this.field[v].bydefault;
+					  this.data[v] = this.field[v].default;
 					}
 				}
 			}
@@ -200,6 +200,11 @@ function Model(empty)
 		{
 			this.cb(error, null);
 		}
+	}
+
+  this.CountSync = function()
+	{
+			return this.link.CountSync(this.collection);
 	}
 
     // DATA : MUST BE A STRING !

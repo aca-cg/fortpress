@@ -59,6 +59,7 @@ function FDB(obj)
 	// CRUD FUNCTIONS
 	this.FindById = require(path.join(__dirname, "fdb", "findbyid.fdb.js")).bind(this);
 	this.Count = require(path.join(__dirname, "fdb", "count.fdb.js")).bind(this);
+  this.CountSync = require(path.join(__dirname, "fdb", "countsync.fdb.js")).bind(this);
 	this.Find = require(path.join(__dirname, "fdb", "find.fdb.js")).bind(this);
 	this.Create = require(path.join(__dirname, "fdb", "create.fdb.js")).bind(this);
 	this.Insert = this.Create;
@@ -100,44 +101,53 @@ function FDB(obj)
     // Init empty buffer
     self.link.buffer[d] = Buffer.from([]);
 
-		fs.readdir(folder, function(err, files)
-		{
-			if(!err)
-			{
-				files.filter(function(file)
-				{
-					return file.substr(- (".".length + d.length + wf.CONF.FDB_DATA_END.length)) === "." + d + wf.CONF.FDB_DATA_END;
-				}).forEach(function(file)
-				{
-					var dataJson = path.join(folder, file);
-					fs.readFile(dataJson, function(err, data)
-					{
-						if(!err)
-						{
-							try
-							{
-								var fIndex = file.split("." + d + wf.CONF.FDB_DATA_END)[0];
+    try
+    {
+		  var files = fs.readdirSync(folder);
+      if(files)
+      {
+        files.filter(function(file)
+        {
+          return file.substr(- (".".length + d.length + wf.CONF.FDB_DATA_END.length)) === "." + d + wf.CONF.FDB_DATA_END;
+        }).forEach(function(file)
+        {
+          var dataJson = path.join(folder, file);
+          try
+          {
+            var data = fs.readFileSync(dataJson);
+            if(data)
+            {
+              try
+              {
+                var fIndex = file.split("." + d + wf.CONF.FDB_DATA_END)[0];
 
                 // TODO : stockage en buffer
-								self.link.data[d][fIndex] = JSON.parse(data.toString());
+                self.link.data[d][fIndex] = JSON.parse(data.toString());
                 self.link.buffer[d] = Buffer.concat( [ self.link.buffer[d], Buffer.from([0]), data ] );
-							}
-							catch(e)
-							{
-                console.log(e);
-								console.log("[!] Corrupted data : " + dataJson);
-							}
-						}
-						else
-						{
-							console.log(err);
-							// ERROR
-						}
-					});
-				});
-			}
-		});
-		startLoad(self, arr, i, j);
+              }
+              catch(e)
+              {
+                //console.log(e);
+                console.log("[!] Corrupted data : " + dataJson);
+              }
+            }
+            else
+            {
+              // ERROR
+            }
+          }
+          catch(e)
+          {
+            //console.log("Error in reading file : " + e);
+          }
+        });
+      }
+    }
+    catch(e)
+    {
+       //console.log("Error in reading FDB : " + e);
+    }
+    startLoad(self, arr, i, j);
 	}
 
 	function startLoad(self, arr, i, j)
