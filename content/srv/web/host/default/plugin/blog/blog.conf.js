@@ -17,7 +17,7 @@ var blogConf=
 			"favicon": "/favicon.ico",
 			"main_title": "My Fortpress Secured Blog",
 			"title": "My Fortpress Secured Blog",
-			"subtitle": "My Fortpress Secured Blog",
+			"subtitle": "Welcome on my Fortpress Secured Blog",
 			"footer": "&copy; 2016 <a href='http://seraum.com' target='_BLANK'>Seraum</a> - Blog ",
 			"locale": "en-US",
 			"logo": "/images/logo.jpg",
