@@ -50,19 +50,22 @@ function Page(_path, _name)
 
 	this.loadViews = function()
 	{
-		var v = this.path + this.init.view + "/";
-		if(fs.existsSync(v) && fs.lstatSync(v).isDirectory())
-		{
-			var dArr = fs.readdirSync(v);
-			var dArrL = dArr.length;
-			for(var d = 0; d < dArrL; d++)
-			{
-				if(wfStringEndsWith(dArr[d], wf.CONF.VIEW_END))
-				{
-					var ind = dArr[d].replace(wf.CONF.VIEW_END, "");
-					this.view[ind] = fs.readFileSync(v + dArr[d], 'utf8');
-				}
-			}
+    if(this.init && this.init.view)
+    {
+		  var v = this.path + this.init.view + "/";
+		  if(fs.existsSync(v) && fs.lstatSync(v).isDirectory())
+		  {
+			  var dArr = fs.readdirSync(v);
+			  var dArrL = dArr.length;
+			  for(var d = 0; d < dArrL; d++)
+			  {
+  				if(wfStringEndsWith(dArr[d], wf.CONF.VIEW_END))
+  				{
+  					var ind = dArr[d].replace(wf.CONF.VIEW_END, "");
+  					this.view[ind] = fs.readFileSync(v + dArr[d], 'utf8');
+  				}
+  			}
+      }
 		}
 	};
 

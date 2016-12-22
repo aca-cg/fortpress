@@ -64,28 +64,31 @@ function Blog(app)
   wf.Router.GET(app.init.blog.domain, blogRoute, blogRouter);
   function blogRouter(req, res)
   {
-    res.setHeader('content-type', 'text/html;charset=utf-8');
-    if(req.param.uri == null || req.param.uri == undefined )
+    try
     {
-      res.end(MAIN);
-    }
-    else if(PAGES[req.param.uri])
-    {
-      res.end(PAGES[req.param.uri]);
-    }
-    else if(req.param.uri == app.init.blog.special["search.json"].uri)
-    {
-      res.end(JSON.stringify(SEARCH_CONTENT));
-    }
-    else if(req.param.uri == app.init.blog.special["tags"].uri)
-    {
-      res.end(TAGS_LIST);
-    }
-    else if(POST_CONTENT[req.param.uri])
-    {
-        res.end(POST_CONTENT[req.param.uri].content);
-    }
-    else res.end(PAGES['404']);
+      res.setHeader('content-type', 'text/html;charset=utf-8');
+      if(req.param.uri == null || req.param.uri == undefined )
+      {
+        res.end(MAIN);
+      }
+      else if(PAGES[req.param.uri])
+      {
+        res.end(PAGES[req.param.uri]);
+      }
+      else if(req.param.uri == app.init.blog.special["search.json"].uri)
+      {
+        res.end(JSON.stringify(SEARCH_CONTENT));
+      }
+      else if(req.param.uri == app.init.blog.special["tags"].uri)
+      {
+        res.end(TAGS_LIST);
+      }
+      else if(POST_CONTENT[req.param.uri])
+      {
+          res.end(POST_CONTENT[req.param.uri].content);
+      }
+      else res.end(PAGES['404']);
+    }catch(e){console.log(req.url);};
   }
 
 
@@ -155,9 +158,11 @@ setInterval(setUpBlog, app.init.blog.refresh);
 
       var author = "";
       var author_conf = conf.author;
+
       if(author_conf && app.init.blog && app.init.blog.author[author_conf])
       {
         author_conf = app.init.blog.author[author_conf];
+        author_conf.custom_left_column = app.init.blog.custom_left_column;
         author_conf.comment = app.init.blog.disqus;
         author_conf.date =
           {
@@ -186,8 +191,14 @@ setInterval(setUpBlog, app.init.blog.refresh);
 
       var tags = forgeTags(conf.tags);
       var pageView = app.view['blog'].toString();
-      var from = ["__TITLE__", "__IMG__", "__AUTHOR__", "__DISQUS__", "__SHARE__", "__CONTENT__", "__TAGS__", "__BLOG_URL__"];
-      var to = [conf.title, img, author, disqusView, shareView, mdHtml, tags, app.init.blog.url];
+
+      var footer_top = "";
+      var footer_bottom = "";
+      if(app.init.blog.custom_footer_blog_top) footer_top = app.init.blog.custom_footer_blog_top.join("");
+      if(app.init.blog.custom_footer_blog_bottom) footer_bottom = app.init.blog.custom_footer_blog_bottom.join("");
+
+      var from = ["__TITLE__", "__IMG__", "__AUTHOR__", "__FOOTER_TOP_BLOG_CUSTOM__", "__FOOTER_BOTTOM_BLOG_CUSTOM__", "__DISQUS__", "__SHARE__", "__CONTENT__", "__TAGS__", "__BLOG_URL__"];
+      var to = [conf.title, img, author, footer_top, footer_bottom, disqusView, shareView, mdHtml, tags, app.init.blog.url];
       pageView = forgeRecursive(pageView, from, to)
       var postView = forgeMeta(postConf) + forgeHeader(postConf) + pageView + forgeFooter(app.init.blog);
 
@@ -289,10 +300,10 @@ setInterval(setUpBlog, app.init.blog.refresh);
   function forgeMeta(conf)
   {
     var meta = app.view['meta'].toString();
-    var from = ["__FAVICON__", "__TWITTER_TITLE__", "__TWITTER_DESCRIPTION__", "__TWITTER_SITE__", "__TWITTER_IMAGE__",
+    var from = ["__FAVICON__", "__META_CUSTOM__", "__TWITTER_TITLE__", "__TWITTER_DESCRIPTION__", "__TWITTER_SITE__", "__TWITTER_IMAGE__",
     "__OG_LOCALE__", "__OG_TYPE__", "__OG_TITLE__", "__OG_URL__", "__OG_SITE_NAME__", "__OG_DESCRIPTION__",
      "__BLOG_URL__", "__BLOG_NAME__", "__MAIN_TITLE__", "__BLOG_TITLE__", "__BLOG_SUBTITLE__"];
-    var to = [ conf.favicon, conf.card.title, conf.card.description, conf.account.twitter, conf.card.image,
+    var to = [ conf.favicon, conf.custom_meta.join(""), conf.card.title, conf.card.description, conf.account.twitter, conf.card.image,
       conf.og.locale, conf.og.type, conf.og.title, conf.og.url, conf.og.name, conf.og.description,
       conf.url, conf.name, conf.main_title, conf.title, conf.subtitle];
     return forgeRecursive(meta, from, to);
@@ -301,8 +312,15 @@ setInterval(setUpBlog, app.init.blog.refresh);
   function forgeFooter(conf)
   {
     var meta = app.view['footer'].toString();
-    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA_ID__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__", "__LINKEDIN_ACCOUNT__"];
-    var to = [conf.name, conf.url, conf.footer, conf.stats.ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github, conf.social.linkedin];
+    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA_ID__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__", "__LINKEDIN_ACCOUNT__",
+               "__SCRIPT_CUSTOM__"];
+
+    var custom_script = "";
+
+    if(conf.custom_script) custom_script = conf.custom_script.join("");
+
+    var to = [conf.name, conf.url, conf.footer, conf.stats.ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github, conf.social.linkedin,
+             custom_script];
     return forgeRecursive(meta, from, to);
   }
 
@@ -430,6 +448,8 @@ setInterval(setUpBlog, app.init.blog.refresh);
     var Social = '<span class="social-share-span"><a target="_BLANK" href="__URL__" title="Share on __NETWORK__" itemprop="__NETWORK__"><i class="fa __SOCIAL_CLASS__"></i> My __NETWORK__</a></span>';
     var Custom = '<span class="social-share-span"><a target="_BLANK" href="__URL__" title="Share on __NETWORK__" itemprop="__NETWORK__"><i class="fa __SOCIAL_CLASS__"></i> __NETWORK__</a></span>';
 
+    var author_custom = "";
+
     if(conf.image) img = forgeRecursive(Image, ["__IMG_URL__", "__TITLE__"], [conf.image.url, conf.image.title]);
     if(conf.name) name = forgeRecursive(Name, ["__NAME__"], [conf.name]);
     if(conf.date) date = forgeRecursive(dateView, ["__TIMESTAMP__", "__DATE__"], [conf.date.timestamp, conf.date.friendly]);
@@ -438,6 +458,7 @@ setInterval(setUpBlog, app.init.blog.refresh);
     if(conf.social && conf.social.facebook) facebook = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.facebook, "Facebook", social_class.facebook]);
     if(conf.social && conf.social.gplus) gplus = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.gplus, "Google Plus", social_class.gplus]);
     if(conf.social && conf.social.linkedin) linkedin = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.linkedin, "Linkedin", social_class.linkedin]);
+    if(conf.custom_left_column) author_custom = conf.custom_left_column.join("");
 
 
     if(conf.custom && conf.custom.length && conf.custom.length > 0)
@@ -449,8 +470,8 @@ setInterval(setUpBlog, app.init.blog.refresh);
        }
     }
 
-    result = forgeRecursive(Author, ["__AUTHOR_IMG__", "__AUTHOR_NAME__", "__DATE_PUBLISHED__", "__DISQUS_COMMENT__", "__AUTHOR_TWITTER__", "__AUTHOR_FACEBOOK__", "__AUTHOR_GPLUS__", "__AUTHOR_LINKEDIN__", "__AUTHOR_CUSTOM__"],
-                                  [img, name, date, comment, twitter, facebook, gplus, linkedin, custom]);
+    result = forgeRecursive(Author, ["__AUTHOR_IMG__", "__AUTHOR_NAME__", "__DATE_PUBLISHED__", "__DISQUS_COMMENT__", "__AUTHOR_TWITTER__", "__AUTHOR_FACEBOOK__", "__AUTHOR_GPLUS__", "__AUTHOR_LINKEDIN__", "__AUTHOR_CUSTOM__", "__LEFT_COLUMN_CUSTOM__"],
+                                  [img, name, date, comment, twitter, facebook, gplus, linkedin, custom, author_custom]);
     return result;
   };
 

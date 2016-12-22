@@ -3,7 +3,7 @@ var frontConf =
 	'uri': 'front',
 	'state': true,
 	'pos': 0,
-	'shared': 'jail',
+	'shared': '../../../../../../../www',
 	'cache': ['.js', '.css'] // '*' => cache all files
 }
 

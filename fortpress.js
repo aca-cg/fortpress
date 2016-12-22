@@ -26,14 +26,33 @@
  *
  */
 
-module.exports = aboutPage;
+'use strict';
 
-function aboutPage()
+/**
+ * @namespace WF
+*/
+
+/**
+ * WF Main method to get WF instance
+ * @Method WF
+ * @return WF Object
+ * @example var wf = new WF();
+ * @memberof WF
+*/
+// DEFINE GLOBAL WF VAR
+global.WF = require('./start/singleton.js');
+var wf = WF();
+
+// CREATE GLOBAL WF CONF
+wf.CONF = {};
+wf.CONF.MAIN_PATH = __dirname + "/";
+wf.CONF.BASE_PATH = wf.CONF.MAIN_PATH + "base" + "/";
+
+// REQUIRE START CONF
+require('./start/start.inc.js');
+
+if(Object.keys(wf.SERVERS).length == 0)
 {
-    this.code = function(req, res)
-    {
-		    var view = this.view.about;
-		    view = view.replace('_IP', req.connection.remoteAddress);
-        res.end(view);
-    };
+  // prevent to stop FortressJS if nothing is in the eventLoop
+  var forever = setInterval(function(){}, 1000 * 60 * 60 * 24 * 7);
 }

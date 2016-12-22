@@ -30,7 +30,7 @@ Join us on Slack : https://fortressjs.slack.com
 ```
 $ git clone https://github.com/seraum/fortpress/
 $ cd fortressjs
-$ node wf.js
+$ node fortpress.js
 ```
 
 or

@@ -6,14 +6,12 @@ var hostConf=
 	"default_page": "home", // default view for /
     "host":
     {
-      "*": "localhost",
+      "*": "All",
     },
 
     "app":
     {
-		"log": "Logger app",
-		"api": "Api app",
-		"route": "route app",
+
     },
 }
 module.exports = hostConf
