@@ -14,7 +14,7 @@ Nodejs extremly fast, simple, powerful, modular and secure net and web framework
 [![bitHound Code](https://www.bithound.io/github/seraum/fortressjs/badges/code.svg)](https://www.bithound.io/github/seraum/fortressjs)
 [![bitHound Overall Score](https://www.bithound.io/github/seraum/fortressjs/badges/score.svg)](https://www.bithound.io/github/seraum/fortressjs)
 
-[![NPM](https://nodei.co/npm/fortressjs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/fortpress/)
+[![NPM](https://nodei.co/npm/fortpress.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/fortpress/)
 
 More info about us : http://fortressjs.com and http://seraum.com
 
