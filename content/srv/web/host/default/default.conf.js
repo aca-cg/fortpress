@@ -11,7 +11,8 @@ var hostConf=
 
     "app":
     {
-
+      "log": "Log plugins",
+      "core": "Blog core plugins",
     },
 }
 module.exports = hostConf

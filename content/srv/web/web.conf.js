@@ -2,7 +2,7 @@ var webConf=
 {
     "state": true, // true | false, default is true
     "type": "http", // "http", "net", ... see base/server/
-    "name": "Default name", // "my name"
+    "name": "Webserver", // Server name
     "port": {"http": 8080}, // { "http": 80, "http2":81 }
     "thread": os.cpus().length, // int value or os.cpus().length
     "engine":

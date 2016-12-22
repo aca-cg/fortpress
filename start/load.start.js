@@ -145,7 +145,7 @@ UTILS.joinDefaultConf = function(init, config, more)
 	{
 		for(var m in more)
 		{
-			if(!init[m]){init[m] = more[m];}
+			if(init[m] == undefined || init[m] == null){init[m] = more[m];}
 		}
 	}
 };

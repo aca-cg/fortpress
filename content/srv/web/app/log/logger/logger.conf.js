@@ -1,4 +1,4 @@
-var conf = 
+var conf =
 {
 	state: true // true/false , default is true if not set
 }

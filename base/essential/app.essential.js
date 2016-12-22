@@ -87,6 +87,7 @@ function LoadApps()
 function parseApp(srv, appPath, root, current)
 {
 	var confModule = new wf.AppClass.App(root, current);
+
 	if(confModule.appState && confModule.init.state)
 	{
 		var newModule = {};

@@ -1,9 +1,9 @@
 /*
- * This file is part of FortressJS - Fast, secure, powerful and simple I/O framework
+ * This file is part of Fortpress - Fast, secure, and simple I/O Blog
  * Copyright (c) 2014-2016 Adrien THIERRY
- * http://fortressjs.com - http://seraum.com
+ * http://seraum.com
  *
- * sources : https://github.com/seraum/fortressjs
+ * sources : https://github.com/seraum/fortpress
  *
  * this program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as

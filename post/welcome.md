@@ -7,7 +7,7 @@
   "description": "We are pleased to announce that we have finally developed a secure blog. We wanted this blog to be as secure as Hackmyfortress.com, which is why it is based entirely on the same technologies as the Fortress. Its name is Fortpress",
   "date": "2016-11-27T14:00:00.000Z",
   "categories": "articles",
-  "tags": ["Fortpress", "hackmyfortress", "blog", "security"],
+  "tags": ["fortpress", "hackmyfortress", "fortressjs", "blog", "security"],
   "image": { "src": "http://i.imgur.com/JQGtQwE.jpg"},
   "comments": true,
   "share": true
@@ -29,13 +29,27 @@ So I took the initiative to code a blog as I wished: simple, light, and secure.
 
 # Multithreaded
 
-By default, Fortpress is Multithreaded. You can change this behavior in the web server settings :
+By default, Fortpress is Multithreaded. You can change this behavior in the web server settings here :
 
 ```
 ./content/srv/web/web.conf.js
 ```
 
 change `thread` by the number you want.
+
+# Views
+
+You can change the look of you blog by editing views and css. Views are here :
+
+```
+./view/
+```
+And css is in the www folder :
+
+```
+./www/
+```
+
 
 # Security
 
@@ -46,3 +60,15 @@ By default, Fortpress change web server ID with 1000, the first created user on 
 ```
 
 You can create a new user with restricted rights, and put this user id in the security conf file.
+
+# Log
+
+By default, the Logger plugin is enabled. You can disable it by deleting it or by set its config state to `false`.
+
+```
+./content/srv/web/app/log/logger/logger.conf.js
+```
+
+# Feedback
+
+Don't hesitate to give us your feedbacks !

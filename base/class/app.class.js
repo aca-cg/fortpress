@@ -83,7 +83,6 @@ function AppConf(_path, _name)
 			try
 			{
 				config = require(file);
-
 			}
 			catch(e)
 			{
