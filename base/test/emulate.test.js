@@ -49,7 +49,6 @@ function Emulate()
 		{
 			remoteAddress: "127.0.0.1",
 		},
-		DB: {FDB: new UTILS.FDB({"database":"test"})},
 		HOST:
 		{
 			MODELS:
