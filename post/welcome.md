@@ -26,3 +26,23 @@ I wanted a simple blog to be able to express myself, to share, to discover, to e
 In the past, I have audited Wordpress plugins, Joomla plugins, Drupal plugins .... The observation is always the same: many security vulnerabilities, problems of updates, a horrible slowness. I regularly help friends optimize their Wordpress: databases of more than 2GB, cache files everywhere, plugins not compatible with the current version of Wordpress. A nightmare.
 
 So I took the initiative to code a blog as I wished: simple, light, and secure.
+
+# Multithreaded
+
+By default, Fortpress is Multithreaded. You can change this behavior in the web server settings :
+
+```
+./content/srv/web/web.conf.js
+```
+
+change `thread` by the number you want.
+
+# Security
+
+By default, Fortpress change web server ID with 1000, the first created user on a Linux system. You can put the ID you want :
+
+```
+./conf/security.conf.js
+```
+
+You can create a new user with restricted rights, and put this user id in the security conf file.

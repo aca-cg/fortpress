@@ -1,4 +1,9 @@
 Version 0.0.9
+- Remove FDB (useless here)
+- Update Blog plugin
+- Change post path
+- Change blog conf path
+- Change blog www path
 
 Version 0.0.8
 - Remove default server -> see fortressjs-demo repo

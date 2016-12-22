@@ -6,7 +6,7 @@ var hostConf=
 	"default_page": "home", // default view for /
     "host":
     {
-      "*": "All",
+      "*": "All domains",
     },
 
     "app":
