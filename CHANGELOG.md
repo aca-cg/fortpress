@@ -4,6 +4,8 @@ Version 0.0.9
 - Change post path
 - Change blog conf path
 - Change blog www path
+- Add theme
+- Move www folder in theme folder
 
 Version 0.0.8
 - Remove default server -> see fortressjs-demo repo
