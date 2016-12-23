@@ -1,6 +1,5 @@
 var wf = WF();
 var blog = require(wf.CONF['MAIN_PATH'] + "blog.conf.js");
-console.log(blog.log);
 
 var conf =
 {
