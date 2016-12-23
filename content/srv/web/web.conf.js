@@ -15,6 +15,6 @@ var webConf=
       "http-route": {at: "route"},
       "http-error": {at: "error"}
     },
-    "map": ["start", "default", "app", "route", "error" ] // Order app/engine launching map
+    "map": ["start", "app", "default", "route", "error" ] // Order app/engine launching map
 }
 module.exports = webConf;
