@@ -66,11 +66,8 @@ You can create a new user with restricted rights, and put this user id in the se
 
 # Log
 
-By default, the Logger plugin is enabled. You can disable it by deleting it or by set its config state to `false`.
+By default, the Logger plugin is enabled. You can disable it by switching the `log` state to `false` in the blog configuration.
 
-```
-./content/srv/web/app/log/logger/logger.conf.js
-```
 
 # Feedback
 
