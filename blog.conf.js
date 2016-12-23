@@ -3,6 +3,9 @@ module.exports =
       "theme": "simpleblog",
       "handle_home_page": true, // handle / or not
       "log": true,
+      "thread": 2, // int value or os.cpus().length for max
+      "port": 8080,
+      "cache": [".js", ".css"], // '*' => cache all files
 			"post_folder": "__MAIN_PATH__post", // blog post folder, could be a linux/windows path : /home/johndoe/post
 			"name": "Fortpress - Blog", // The blog name
 			"domain": "*", // "*" if any, else something.tld to force your domain
@@ -17,6 +20,7 @@ module.exports =
 			"logo": "/images/logo.jpg", // blog logo
 			"logo_style":"background-color:#ffffff;", // logo custom style
 			"refresh": 1000 * 60 * 60, // load new post every hour
+
 			"menu": // Forge your menu here
 			[
 				{

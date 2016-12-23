@@ -8,7 +8,7 @@ var frontConf =
 	'state': true,
 	'pos': 0,
 	'shared': '../../../../../../../theme/' + blog.theme + '/' + wf.CONF['DEFAULT_SHARED_FOLDER'],
-	'cache': ['.js', '.css'] // '*' => cache all files
+	'cache': blog.cache // '*' => cache all files
 }
 
 module.exports = frontConf;
