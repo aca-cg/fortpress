@@ -1,5 +1,5 @@
 /*
- * This file is part of Fortpress - Fast, secure, and simple I/O Blog
+ * This file is part of Fortpress - Fast, secure, and simple Blog
  * Copyright (c) 2014-2016 Adrien THIERRY
  * http://fortpress.seraum.com - http://seraum.com
  *
@@ -33,8 +33,7 @@ var MAIN = "";
 var MENU = "";
 var TAGS_LIST = "";
 var PAGES = {};
-
-var _404 = "404";
+var SITEMAP = "";
 
 var SEPARATOR = "<--MARKUP-->";
 
@@ -83,6 +82,14 @@ function Blog(app)
       {
         res.end(TAGS_LIST);
       }
+      else if(req.param.uri == app.init.blog.special["sitemap"].uri)
+      {
+        res.writeHead(200,
+		    {
+  			  'Content-type': 'application/xml'
+        });
+        res.end(SITEMAP);
+      }
       else if(POST_CONTENT[req.param.uri])
       {
           res.end(POST_CONTENT[req.param.uri].content);
@@ -99,14 +106,66 @@ function setUpBlog()
     {
       forgeMain()
       preparePages();
-      //forge404();
       forgeTagsList();
+      forgeSitemap();
     }
     forgeMD(Loaded);
 }
 setUpBlog();
 setInterval(setUpBlog, app.init.blog.refresh);
 /** CONSTRUCT **/
+  function forgeSitemap()
+  {
+    var sitemap = "";
+    sitemap = '<?xml version="1.0" encoding="UTF-8"?>\
+                <urlset\
+                  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\
+                  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\
+                  http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\
+              <url>\
+                <loc>' + app.init.blog.special.sitemap.url + '</loc>\
+                <changefreq>' + app.init.blog.special.sitemap.mainfreq + '</changefreq>\
+                <priority>' + app.init.blog.special.sitemap.mainpriority + '</priority>\
+              </url>';
+
+
+    for(var i = 0; i < SEARCH_CONTENT.length; i++)
+    {
+       sitemap += "<url>"
+       sitemap += "<loc>" + SEARCH_CONTENT[i].link + "</loc>";
+       sitemap += "<changefreq>" + app.init.blog.special.sitemap.postfreq + "</changefreq>";
+       sitemap += "<priority>" + app.init.blog.special.sitemap.postpriority + "</priority>";
+       sitemap += "</url>";
+    }
+
+    for(var p in app.init.blog.page)
+    {
+      if(app.init.blog.page[p].indexed == undefined || app.init.blog.page[p].indexed != false)
+      {
+       sitemap += "<url>"
+       sitemap += "<loc>" + app.init.blog.special.sitemap.url + app.init.blog.page[p].uri + "</loc>";
+       sitemap += "<changefreq>" + app.init.blog.special.sitemap.pagefreq + "</changefreq>";
+       sitemap += "<priority>" + app.init.blog.special.sitemap.pagepriority + "</priority>";
+       sitemap += "</url>";
+      }
+    }
+
+    for(var s in app.init.blog.special)
+    {
+      if(app.init.blog.special[s].indexed == undefined || app.init.blog.special[s].indexed != false)
+      {
+       sitemap += "<url>"
+       sitemap += "<loc>" + app.init.blog.special.sitemap.url + app.init.blog.special[s].uri + "</loc>";
+       sitemap += "<changefreq>" + app.init.blog.special.sitemap.specialfreq + "</changefreq>";
+       sitemap += "<priority>" + app.init.blog.special.sitemap.specialpriority + "</priority>";
+       sitemap += "</url>";
+      }
+    }
+    sitemap += "</urlset>";
+    SITEMAP = forgeRecursive(sitemap, ["__URL__"], [app.init.blog.url]);
+  }
+
   function forgeMain()
   {
     var mainPage = app.view['main'].toString();
@@ -292,9 +351,10 @@ setInterval(setUpBlog, app.init.blog.refresh);
   function forgeHeader(conf)
   {
     forgeMenu(conf);
+
     var header = app.view['header'].toString();
-    var from = ["__MENU__", "__BLOG_LOGO__", "__BLOG_LOGO_STYLE__", "__BLOG_URL__", "__BLOG_TITLE__", "__BLOG_SUBTITLE__",  ];
-    var to = [MENU, conf.logo, conf.logo_style, conf.url, conf.title, conf.subtitle];
+    var from = ["__MENU__", "__BLOG_LOGO__", "__BLOG_LOGO_STYLE__", "__BLOG_URL__", "__BLOG_TITLE__", "__BLOG_LOGO_TITLE__", "__BLOG_SUBTITLE__",  ];
+    var to = [MENU, conf.logo, conf.logo_style, conf.url, conf.title, app.init.blog.main_title, conf.subtitle];
     return forgeRecursive(header, from, to);
   }
 
@@ -304,7 +364,7 @@ setInterval(setUpBlog, app.init.blog.refresh);
     var from = ["__FAVICON__", "__META_CUSTOM__", "__TWITTER_TITLE__", "__TWITTER_DESCRIPTION__", "__TWITTER_SITE__", "__TWITTER_IMAGE__",
     "__OG_LOCALE__", "__OG_TYPE__", "__OG_TITLE__", "__OG_URL__", "__OG_SITE_NAME__", "__OG_DESCRIPTION__",
      "__BLOG_URL__", "__BLOG_NAME__", "__MAIN_TITLE__", "__BLOG_TITLE__", "__BLOG_SUBTITLE__"];
-    var to = [ conf.favicon, conf.custom_meta.join(""), conf.card.title, conf.card.description, conf.account.twitter, conf.card.image,
+    var to = [ conf.favicon, conf.custom_meta.join(""), conf.card.title, conf.card.description, conf.card.account, conf.card.image,
       conf.og.locale, conf.og.type, conf.og.title, conf.og.url, conf.og.name, conf.og.description,
       conf.url, conf.name, conf.main_title, conf.title, conf.subtitle];
     return forgeRecursive(meta, from, to);
@@ -319,17 +379,29 @@ setInterval(setUpBlog, app.init.blog.refresh);
        ga = forgeRecursive(app.view['analytics'].toString(), ["__GA_ID__"], [conf.stats.ga]);
     }
 
-    var meta = app.view['footer'].toString();
-    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__", "__LINKEDIN_ACCOUNT__",
-               "__SCRIPT_CUSTOM__"];
+    var footerView = app.view['footer'].toString();
+    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA__", "__SOCIAL_LINK__", "__SCRIPT_CUSTOM__"];
 
     var custom_script = "";
 
     if(conf.custom_script) custom_script = conf.custom_script.join("");
 
-    var to = [conf.name, conf.url, conf.footer, ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github, conf.social.linkedin,
-             custom_script];
-    return forgeRecursive(meta, from, to);
+    var social = "";
+    for(var i = 0; i < app.init.blog.social.length; i ++)
+    {
+       if(app.init.blog.social[i].url)
+       {
+          var custom = "";
+          if(app.init.blog.social[i].custom) custom = app.init.blog.social[i].custom;
+
+          social += forgeRecursive(app.view['social'].toString(), ["__ACCOUNT_URL__", "__BLOG_NAME__", "__BLOG_URL__", "__CUSTOM__"],
+                                   [app.init.blog.social[i].url, conf.name, conf.url, custom]);
+       }
+    }
+
+
+    var to = [conf.name, conf.url, conf.footer, ga, social, custom_script];
+    return forgeRecursive(footerView, from, to);
   }
 
   function forgeTags(arr)
@@ -430,56 +502,35 @@ setInterval(setUpBlog, app.init.blog.refresh);
   function forgeAuthor(conf)
   {
     var Author = app.view['author'].toString();
-    var result = "";
+    var authorLink = app.view['authorlink'].toString();
 
-    var img = "";
-    var name = "";
-    var date = "";
+    var result = "";
     var comment = "";
     var twitter = "";
     var facebook = "";
     var gplus = "";
     var linkedin = "";
-    var custom = "";
-
-    var social_class =
-    {
-      "twitter": "fa-twitter-square",
-      "facebook": "fa-facebook-square",
-      "gplus":"fa-gplus-square",
-      "linkedin": "fa-linkedin-square",
-    }
-
-    var Image = '<img src="__IMG_URL__" class="bio-photo" alt="__TITLE__" title="__TITLE__">';
-    var Name = '<span class="author vcard">By <span class="fn">__NAME__</span></span>';
-    var dateView = '<span class="entry-date date published"><time datetime="__TIMESTAMP__"><i class="fa fa-calendar-o"></i> __DATE__</time></span>';
-    var Social = '<span class="social-share-span"><a target="_BLANK" href="__URL__" title="Share on __NETWORK__" itemprop="__NETWORK__"><i class="fa __SOCIAL_CLASS__"></i> My __NETWORK__</a></span>';
-    var Custom = '<span class="social-share-span"><a target="_BLANK" href="__URL__" title="Share on __NETWORK__" itemprop="__NETWORK__"><i class="fa __SOCIAL_CLASS__"></i> __NETWORK__</a></span>';
-
+    var link = "";
     var author_custom = "";
 
-    if(conf.image) img = forgeRecursive(Image, ["__IMG_URL__", "__TITLE__"], [conf.image.url, conf.image.title]);
-    if(conf.name) name = forgeRecursive(Name, ["__NAME__"], [conf.name]);
-    if(conf.date) date = forgeRecursive(dateView, ["__TIMESTAMP__", "__DATE__"], [conf.date.timestamp, conf.date.friendly]);
-    if(conf.comment) comment = '<span class="entry-comments"><i class="fa fa-comment-o"></i> <a href="#disqus_thread">Leave a Comment</a></span>';
-    if(conf.social && conf.social.twitter) twitter = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.twitter, "Twitter", social_class.twitter]);
-    if(conf.social && conf.social.facebook) facebook = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.facebook, "Facebook", social_class.facebook]);
-    if(conf.social && conf.social.gplus) gplus = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.gplus, "Google Plus", social_class.gplus]);
-    if(conf.social && conf.social.linkedin) linkedin = forgeRecursive(Social, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.social.linkedin, "Linkedin", social_class.linkedin]);
+    if(conf.comment) comment = app.view['disquscomment'];
     if(conf.custom_left_column) author_custom = conf.custom_left_column.join("");
 
-
-    if(conf.custom && conf.custom.length && conf.custom.length > 0)
+    if(conf.link && conf.link.length && conf.link.length > 0)
     {
-
-       for(var i = 0; i < conf.custom.length; i++)
+       for(var i = 0; i < conf.link.length; i++)
        {
-          custom += forgeRecursive(Custom, ["__URL__", "__NETWORK__", "__SOCIAL_CLASS__"], [conf.custom[i].url, conf.custom[i].title, conf.custom[i].class]);
+          link += forgeRecursive(authorLink, ["__URL__", "__TITLE__", "__CLASS__"], [conf.link[i].url, conf.link[i].title, conf.link[i].class]);
        }
     }
 
-    result = forgeRecursive(Author, ["__AUTHOR_IMG__", "__AUTHOR_NAME__", "__DATE_PUBLISHED__", "__DISQUS_COMMENT__", "__AUTHOR_TWITTER__", "__AUTHOR_FACEBOOK__", "__AUTHOR_GPLUS__", "__AUTHOR_LINKEDIN__", "__AUTHOR_CUSTOM__", "__LEFT_COLUMN_CUSTOM__"],
-                                  [img, name, date, comment, twitter, facebook, gplus, linkedin, custom, author_custom]);
+    result = forgeRecursive(Author,
+
+                            ["__IMG_URL__", "__IMG_TITLE__", "__AUTHOR_NAME__", "__TIMESTAMP__", "__DATE__", "__DISQUS_COMMENT__", "__AUTHOR_LINK__", "__LEFT_COLUMN_CUSTOM__"],
+
+                            [conf.image.url, conf.image.title, conf.name, conf.date.timestamp, conf.date.friendly, comment, link, author_custom]);
+
+
     return result;
   };
 

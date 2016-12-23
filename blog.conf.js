@@ -4,9 +4,9 @@ module.exports =
       "handle_home_page": true, // handle / or not
       "log": true,
 			"post_folder": "__MAIN_PATH__post", // blog post folder, could be a linux/windows path : /home/johndoe/post
-			"name": "Seraum - Blog", // The blog name
-			"domain": "*", // "*" if any, else something.tld to force to your domain
-			"url": "/", // default url, / by default, could be : http://my.blog/
+			"name": "Fortpress - Blog", // The blog name
+			"domain": "*", // "*" if any, else something.tld to force your domain
+			"url": "http://fortpress.seraum.com/", // default url, / by default, could be : http://my.blog, with last /
 			"uri": "", // default uri, "" if /
 			"favicon": "/favicon.ico", // favicon
 			"main_title": "Fortpress - Fast, simple and secure Blog", // blog title for micro data
@@ -17,7 +17,7 @@ module.exports =
 			"logo": "/images/logo.jpg", // blog logo
 			"logo_style":"background-color:#ffffff;", // logo custom style
 			"refresh": 1000 * 60 * 60, // load new post every hour
-			"menu":
+			"menu": // Forge your menu here
 			[
 				{
 					"href":"__BLOG_URL__",
@@ -51,15 +51,15 @@ module.exports =
 
 			],
 
-			"page": // automaticaly loaded
+			"page": // automaticaly loaded with view/*, describe your custom page here
 			{
 				"search":
 				{
 					"uri": "search",
 					"view":"search",
 					"type": "article",
-					"title": "Hackmyfortress - Blog - Search engine",
-					"description": "Search on Hackmyfortress - Blog",
+					"title": "Fortpress - Blog - Search engine",
+					"description": "Search on Fortress - Blog",
 					"image": "",
 				},
 				"404":
@@ -67,13 +67,13 @@ module.exports =
 					"uri": "404",
 					"view":"404",
 					"type": "article",
-					"title": "Hackmyfortress - 404 Error",
+					"title": "Fortress - 404 Error",
 					"description": "This content doesn't exist - 404 Error",
 					"image": "",
 				}
 			},
 
-			"special":
+			"special": // don't touch this if you don't know how it works
 			{
 
 				"search.json":
@@ -81,40 +81,52 @@ module.exports =
 					"uri": "search.json"
 				},
 
+        "sitemap":
+        {
+          "uri": "sitemap.xml",
+          "type": "sitemap",
+          "url": "__URL__", // Is replaced by blog URL
+
+          "mainfreq": "daily",
+          "postfreq": "weekly",
+          "specialfreq": "weekly",
+          "pagefreq": "weekly",
+
+          "mainpriority": "1.00",
+          "postpriority": "0.80",
+          "specialpriority": "0.70",
+          "pagepriority": "0.80",
+          "indexed": false, // you don't want to index sitemap.xml in sitemap.xml : ]
+
+        },
+
 				"tags":
 				{
 				 	"uri": "tags",
 					"type": "article",
-					"title": "Hackmyfortress - Archive indexed by tags",
+					"title": "Fortpress - Archive indexed by tags",
 					"description": "An archive of posts sorted by tag.",
 					"image": "",
 				}
 			},
 
-      "author":
+      "author": // You can as many authors as you want
       {
         "adrien":
         {
           "name": "Adrien T.",
           "image":
           {
-             "url":"/blog/author/adrien.jpg",
+            "url":"/blog/author/adrien.jpg",
             "title":"Adrien T.",
           },
-          "social":
-          {
-             "twitter": "https://twitter.com/adrien_thierry",
-             "facebook": "https://www.facebook.com/adrien.thierry.fr",
-             "linkedin": "https://www.linkedin.com/in/adrien-thierry-6448a664",
-          },
-          "custom": // add custom link in author column
+          "link":
           [
-            {
-              "url": "http://hackmyfortress.com",
-              "title": "Hackmyfortress",
-              "class": "fa-dollar", // you can use font-awesome
-            },
-          ]
+            {"class":"fa fa-twitter-square", "title":"My Twitter", "url":"https://twitter.com/adrien_thierry"},
+            {"class":"fa fa-facebook-square", "title":"My Facebook", "url":"https://www.facebook.com/adrien.thierry.fr"},
+            {"class":"fa fa-linkedin-square", "title":"My Linkedin", "url":"https://www.linkedin.com/in/adrien-thierry-6448a664"},
+            {"class":"fa fa-dollar", "title":"Hackmyfortress", "url":"http://hackmyfortress.com"},
+          ],
         },
       },
 
@@ -122,41 +134,38 @@ module.exports =
 			{
 				"locale": "en_US",
 				"type": "website",
-				"title": "__BLOG_TITLE__",
-				"url": "__BLOG_URL__",
-				"name": "__BLOG_NAME__",
-				"description": "__BLOG_SUBTITLE__",
+				"title": "__BLOG_TITLE__", // Is replaced by Blog title or post title
+				"url": "__BLOG_URL__",// Is replaced by Blog url or post url
+				"name": "__BLOG_NAME__", // Is replaced by Blog name
+				"description": "__BLOG_SUBTITLE__", // Is replaced by blog subtitle or post description
 			},
 
 			"card":
 			{
-				"title": "__BLOG_TITLE__",
-				"description": "__BLOG_SUBTITLE__",
+        "account": "@seraum",  // TWITTER ACCOUNT WITH @
+				"title": "__BLOG_TITLE__", // Is replaced by Blog title or post title
+				"description": "__BLOG_SUBTITLE__", // Is replaced by blog subtitle or post description
 				"image": "https://i.imgur.com/JQGtQwE.jpg",
 			},
 
 			"social":
-			{
-				"facebook": "https://facebook.com/seraumdotcom",
-				"twitter": "https://twitter.com/seraum",
-				"gplus": "https://plus.google.com/+seraumdotcom",
-				"github": "https://github.com/seraum/",
-        "linkedin": "https://www.linkedin.com/in/adrien-thierry-6448a664",
-			},
+      [
 
-			"account":
-			{
-				"twitter": "@seraum", // TWITTER ACCOUNT WITH @
-			},
+        { "custom": "fa fa-facebook-square fa-2x", "url": "https://facebook.com/seraumdotcom"},
+        { "custom": "fa fa-twitter-square fa-2x", "url": "https://twitter.com/seraum"},
+        { "custom": "fa fa-google-plus-square fa-2x", "url": "https://plus.google.com/+seraumdotcom"},
+        { "custom": "fa fa-github-square fa-2x", "url": "https://github.com/seraum/fortpress"},
+        { "custom": "fa fa-linkedin-square fa-2x", "url": "https://www.linkedin.com/in/adrien-thierry-6448a664"},
+      ],
 
 			"stats":
 			{
-				"ga": "", // GA ID
+				"ga": "UA-37283264-10", // GA ID
 			},
 
-			"disqus": "", // DISQUS ID
+			"disqus": "fortpress", // DISQUS ID
 
-			"sort": function(a, b)
+			"sort": function(a, b) // Sort post by date, you can sort post with what you want
 			{
 				return new Date(b.date) - new Date(a.date);
 			},

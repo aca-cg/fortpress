@@ -37,16 +37,20 @@ __Blog conf__
 
 __Author__
 
-* \_\_AUTHOR\_IMG\_\_ : replaced by the Author's image
+* \_\_IMG\_URL\_\_ : replaced by the Author's image url
+* \_\_IMG\_TITLE\_\_ : replaced by the Author's image title
 * \_\_AUTHOR\_NAME\_\_ : replaced by the Author's name
-* \_\_DATE\_PUBLISHED\_\_ : Replaced by the publication date of the post
+* \_\_TIMESTAMP\_\_ : replaced by the publication's json date of the current post
+* \_\_DATE\_\_ : Replaced by the publication's date of the post
 * \_\_DISQUS\_COMMENT\_\_ : Replaced by the count of comments if Disqus is active
-* \_\_AUTHOR\_TWITTER\_\_  : Replaced by the Author's Twitter link
-* \_\_AUTHOR\_FACEBOOK\_\_ : Replaced by the Author's Facebook link
-* \_\_AUTHOR\_GPLUS\_\_ : Replaced by the Author's Google+ link
-* \_\_AUTHOR\_LINKEDIN\_\_ : Replaced by the Author's Linkeding link
-* \_\_AUTHOR\_CUSTOM\_\_ : Replaced by Author's custom links
+* \_\_AUTHOR\_LINK\_\_  : Replaced by the Authorlink's html
 * \_\_LEFT\_COLUMN\_CUSTOM\_\_ : Replaced by custom html
+
+__Authorlink__
+
+* \_\_URL\_\_ : replaced by the url of current Author's link
+* \_\_TITLE\_\_ : replaced by the title of current Author's link
+* \_\_CLASS\_\_ : replaced by the class of current Author's link
 
 __Blog__
 
