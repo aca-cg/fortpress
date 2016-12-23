@@ -140,7 +140,8 @@ setInterval(setUpBlog, app.init.blog.refresh);
       postConf.current_url = postConf.url + conf.uri;
       postConf.card.title = conf.title;
       postConf.card.description = conf.description;
-      postConf.card.image = conf.image.src;
+      postConf.card.image = "" ;
+      if(conf.image && conf.image.src && conf.image.src.length > 0) postConf.card.image = conf.image.src;
 
       postConf.og.type = conf.type,
       postConf.og.title = conf.title;

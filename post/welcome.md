@@ -2,7 +2,7 @@
   "author": "adrien",
   "title": "Welcome in the Fortress blog !",
   "uri": "welcome-in-the-fortress-blog",
-  "description": "We are pleased to announce that we have finally developed a secure blog. We wanted this blog to be as secure as Hackmyfortress.com, which is why it is based entirely on the same technologies as the Fortress. Its name is Fortpress",
+  "description": "We are pleased to announce that we have finally developed a secure blog. We wanted this blog to be as secure as Hackmyfortress.com. Its name is Fortpress.",
   "date": "2016-11-27T14:00:00.000Z",
   "tags": ["fortpress", "hackmyfortress", "fortressjs", "blog", "security"],
   "image": { "src": "http://i.imgur.com/JQGtQwE.jpg"},
