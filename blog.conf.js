@@ -1,7 +1,7 @@
 module.exports =
 {
+      "theme": "simpleblog",
       "handle_home_page": true, // handle / or not
-
 			"post_folder": "__MAIN_PATH__post", // blog post folder, could be a linux/windows path : /home/johndoe/post
 			"name": "Seraum - Blog", // The blog name
 			"domain": "*", // "*" if any, else something.tld to force to your domain

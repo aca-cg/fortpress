@@ -10,6 +10,6 @@ var blogConf=
 		"pos": 10,
 		"hook": "route",
 		"blog": blog,
-    "view": "../../../../../../view"
+    "view": "../../../../../../theme/" + blog.theme + "/view"
 	}
 module.exports = blogConf;

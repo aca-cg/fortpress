@@ -1,12 +1,9 @@
 {
-  "type": "article",
   "author": "adrien",
-  "layout": "post",
   "title": "Welcome in the Fortress blog !",
   "uri": "welcome-in-the-fortress-blog",
   "description": "We are pleased to announce that we have finally developed a secure blog. We wanted this blog to be as secure as Hackmyfortress.com, which is why it is based entirely on the same technologies as the Fortress. Its name is Fortpress",
   "date": "2016-11-27T14:00:00.000Z",
-  "categories": "articles",
   "tags": ["fortpress", "hackmyfortress", "fortressjs", "blog", "security"],
   "image": { "src": "http://i.imgur.com/JQGtQwE.jpg"},
   "comments": true,
@@ -15,7 +12,7 @@
 <--MARKUP-->
 
 
-I wanted a simple blog to be able to express myself, to share, to discover, to exchange. And that's it. A secure blog, based on the same technologies as Hackmyfortress.com. The basic principles are always the same:
+I wanted a simple blog to be able to express myself, to share, to discover, to exchange. And that's it. A secure blog. The basic principles are :
 * security
 * efficiency
 * simplicity
@@ -37,18 +34,22 @@ By default, Fortpress is Multithreaded. You can change this behavior in the web 
 
 change `thread` by the number you want.
 
-# Views
+# Look
 
-You can change the look of you blog by editing views and css. Views are here :
+You can change the default look of you blog by editing views and css. Views are here :
 
 ```
-./view/
+./theme/simpleblog/view/
 ```
 And css is in the www folder :
 
 ```
-./www/
+./theme/simpleblog/www/
 ```
+
+# Theming
+
+You can create new theme simply in copying the `simpleblog` theme, and modifying what you want. Don't forget to change the `theme` value in the blog configuration : adjust it to your new theme folder.
 
 
 # Security
