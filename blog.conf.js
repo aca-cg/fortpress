@@ -172,7 +172,7 @@ module.exports =
 
       "custom_meta":
       [
-        '<meta name="google-site-verification" content="q8fTBRiMegFYv-8Obtg8VFuO5IeR-a8oeGiw-AfMAis" />',
+        '<meta name="google-site-verification" content="q8fTBRiMegFYv-8Obtg8VFuO5IeR-a8oeGiw-AfMAis" />', // Google verification example, you can remove it
       ],
 
       "custom_script":
