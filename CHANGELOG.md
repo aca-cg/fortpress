@@ -6,6 +6,8 @@ Version 0.0.9
 - Change blog www path
 - Add theme
 - Move www folder in theme folder
+- Add post.md squel
+- Add blog.conf.js squel
 
 Version 0.0.8
 - Remove default server -> see fortressjs-demo repo
