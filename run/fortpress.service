@@ -1,0 +1,10 @@
+[Unit]
+Description=Fortpress Service
+
+[Service]
+Type=forking
+ExecStart=/opt/fortpress/run/fortpress.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
