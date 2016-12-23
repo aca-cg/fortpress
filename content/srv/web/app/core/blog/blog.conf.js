@@ -10,6 +10,6 @@ var blogConf=
 		"pos": 10,
 		"hook": "route",
 		"blog": blog,
-    "view": "../../../../../../theme/" + blog.theme + "/view"
+    "view": "../../../../../../theme/" + blog.theme + "/" + wf.CONF['DEFAULT_VIEW_FOLDER']
 	}
 module.exports = blogConf;

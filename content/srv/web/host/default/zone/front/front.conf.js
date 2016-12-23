@@ -7,7 +7,7 @@ var frontConf =
 	'uri': 'front',
 	'state': true,
 	'pos': 0,
-	'shared': '../../../../../../../theme/' + blog.theme + '/www',
+	'shared': '../../../../../../../theme/' + blog.theme + '/' + wf.CONF['DEFAULT_SHARED_FOLDER'],
 	'cache': ['.js', '.css'] // '*' => cache all files
 }
 

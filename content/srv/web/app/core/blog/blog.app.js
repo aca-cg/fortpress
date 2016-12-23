@@ -1,7 +1,7 @@
 /*
  * This file is part of Fortpress - Fast, secure, and simple I/O Blog
  * Copyright (c) 2014-2016 Adrien THIERRY
- * http://seraum.com
+ * http://fortpress.seraum.com - http://seraum.com
  *
  * sources : https://github.com/seraum/fortpress
  *
@@ -312,15 +312,22 @@ setInterval(setUpBlog, app.init.blog.refresh);
 
   function forgeFooter(conf)
   {
+    var ga = "";
+    if(conf.stats && conf.stats.ga && conf.stats.ga.length > 0)
+    {
+       ga = app.view['analytics'].toString();
+       ga = forgeRecursive(app.view['analytics'].toString(), ["__GA_ID__"], [conf.stats.ga]);
+    }
+
     var meta = app.view['footer'].toString();
-    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA_ID__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__", "__LINKEDIN_ACCOUNT__",
+    var from = ["__BLOG_NAME__", "__BLOG_URL__", "__BLOG_FOOTER__", "__GA__", "__TWITTER_ACCOUNT__", "__FACEBOOK_ACCOUNT__", "__GPLUS_ACCOUNT__", "__GITHUB_ACCOUNT__", "__LINKEDIN_ACCOUNT__",
                "__SCRIPT_CUSTOM__"];
 
     var custom_script = "";
 
     if(conf.custom_script) custom_script = conf.custom_script.join("");
 
-    var to = [conf.name, conf.url, conf.footer, conf.stats.ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github, conf.social.linkedin,
+    var to = [conf.name, conf.url, conf.footer, ga, conf.social.twitter, conf.social.facebook, conf.social.gplus, conf.social.github, conf.social.linkedin,
              custom_script];
     return forgeRecursive(meta, from, to);
   }

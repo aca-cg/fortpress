@@ -11,7 +11,7 @@ module.exports =
 			"main_title": "Fortpress - Fast, simple and secure Blog", // blog title for micro data
 			"title": "Fortpress", // Blog title
 			"subtitle": "My fast, simple and secure Blog", // Blog subtitle
-			"footer": "&copy; 2016 Seraum - Blog ", // Blog footer
+			"footer": "&copy; 2016 <a href='http://seraum.com' target='_BLANK'>Seraum</a> ", // Blog footer
 			"locale": "en-US", // blog default locale
 			"logo": "/images/logo.jpg", // blog logo
 			"logo_style":"background-color:#ffffff;", // logo custom style

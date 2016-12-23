@@ -63,7 +63,7 @@
   wf.CONF['JAIL_FOLDER'] = "jail/";
 
   /*** DEFAULT INIT ***/
-  wf.CONF['DEFAULT_SHARED_FOLDER'] = "jail";
+  wf.CONF['DEFAULT_SHARED_FOLDER'] = "www";
   wf.CONF['DEFAULT_VIEW_FOLDER'] = "view";
   wf.CONF['DEFAULT_ZONE'] = "front";
   wf.CONF['DEFAULT_PAGE'] = "home";

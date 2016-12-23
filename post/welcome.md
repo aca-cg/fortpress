@@ -51,6 +51,8 @@ And css is in the www folder :
 
 You can create new theme simply in copying the `simpleblog` theme, and modifying what you want. Don't forget to change the `theme` value in the blog configuration : adjust it to your new theme folder.
 
+You can learn theme variables in the [Theming article](/theming)
+
 
 # Security
 
